@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import NavBar from "@/components/NavBar";
 import Textarea from "@/components/Textarea";
 import Input from "@/components/Input";
 import Label from "@/components/Label";
-import InvitationCover from "@/components/InvitationCover";
-import Image from "@/components/Image";
-import InfoRow from "@/components/InfoRow";
+import InvitationContent from "@/components/InvitationContent";
 import Button from "@/components/Button";
+import { publishInvitation } from "./actions";
 
 const PLACEHOLDER = {
   title: "예) 허들링 클럽 2번째\n오프라인 밋업",
@@ -25,8 +25,11 @@ export default function CreateInvitation() {
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
   const [body, setBody] = useState("");
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
-  const canPublish = [title, date, location, body].every((v) => v.trim() !== "");
+  const canPublish = [title, date, location, body].every((v) => v.trim() !== "") && !pending;
 
   const preview = {
     title: title || sample(PLACEHOLDER.title),
@@ -35,10 +38,18 @@ export default function CreateInvitation() {
     body: body || PLACEHOLDER.body,
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!canPublish) return;
-    // TODO: 발행 API 연결
+    setPending(true);
+    setError(null);
+    const result = await publishInvitation({ title, date, location, body });
+    if ("error" in result) {
+      setError("초대장을 저장하지 못했어요. 잠시 후 다시 시도해주세요.");
+      setPending(false);
+      return;
+    }
+    router.push(`/i/${result.id}?published=1`);
   };
 
   return (
@@ -91,21 +102,7 @@ export default function CreateInvitation() {
             tabIndex={0}
             className="h-463 w-full overflow-y-auto overscroll-contain rounded-control border border-border-subtle bg-surface-default"
           >
-            <InvitationCover title={preview.title} date={preview.date} location={preview.location} />
-
-            <div className="flex w-full flex-col items-center gap-stack-md bg-surface-default px-page-horizontal py-cover-inset">
-              <Image type="flag" alt="" />
-              <p className="w-full whitespace-pre-wrap break-words text-center text-body-compact text-text-primary">
-                {preview.body}
-              </p>
-            </div>
-
-            <div className="w-full bg-surface-default px-page-horizontal pt-stack-lg pb-section-lg">
-              <div className="flex w-full flex-col items-start gap-control-compact overflow-hidden rounded-card bg-surface-subtle p-page-horizontal">
-                <InfoRow label="일시" value={preview.date} />
-                <InfoRow label="장소" value={preview.location} />
-              </div>
-            </div>
+            <InvitationContent {...preview} />
           </div>
           <p className="text-caption-md text-text-tertiary">입력하는 내용이 바로 미리보기에 반영돼요.</p>
         </section>
@@ -113,7 +110,18 @@ export default function CreateInvitation() {
 
       {/* ButtonContainer — 하단 고정 */}
       <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-mobile bg-surface-default p-page-horizontal">
-        <Button type="submit" size="lg" label="발행하기" disabled={!canPublish} className="w-full" />
+        {error && (
+          <p role="alert" className="pb-inline-md text-center text-caption-md text-text-tertiary">
+            {error}
+          </p>
+        )}
+        <Button
+          type="submit"
+          size="lg"
+          label={pending ? "발행 중…" : "발행하기"}
+          disabled={!canPublish}
+          className="w-full"
+        />
       </div>
     </form>
   );
