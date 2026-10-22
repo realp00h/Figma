@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+/*
+ * Huddling Club Design System 토큰
+ * 출처: Figma "Tokens" (node 1:208) 변수
+ * 가이드 문서 전용 값(guide-*, preserved-*, Documentation/Inter)은 제외
+ */
+@theme {
+  /* ---------- Font ---------- */
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR",
+    sans-serif;
+
+  /* ---------- Color ---------- */
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* text */
+  --color-text-strong: #000000;
+  --color-text-primary: #131313;
+  --color-text-secondary: #6b7280;
+  --color-text-tertiary: #66707a;
+  --color-text-disabled: #a0a2a3;
+
+  /* surface / background */
+  --color-surface-default: #ffffff;
+  --color-surface-subtle: #f3f4f6;
+  --color-surface-inverse: #1f2937;
+  --color-background-subtle: #f9fafb;
+
+  /* border */
+  --color-border-default: #e5e7eb;
+  --color-border-subtle: #e7e7e8;
+  --color-border-accent: #1f3dbc;
+  --color-border-on-dark: #ffffff33;
+
+  /* action */
+  --color-action-primary: #536dfe;
+  --color-action-secondary: #297eff;
+  --color-action-hover-overlay: #1f3dbcb2;
+
+  /* info */
+  --color-info-strong: #00378a;
+  --color-info-soft: #74aafb;
+  --color-info-subtle: #dceafe;
+
+  /* feedback */
+  --color-feedback-error: #d90000;
+
+  /* preview */
+  --color-preview-neutral-800: #5e5e5e;
+
+  /* 컴포넌트(node 1:966)에서 쓰는 Figma 변수 — Tokens 가이드에는 없음 */
+  --color-text-inverse: #ffffff; /* color/text/inverse */
+  --color-cover-gradient-start: #050510; /* color/cover-gradient/preserved-3 */
+  --color-cover-gradient-end: #656f79; /* color/cover-gradient/preserved-4 */
+
+  /* ---------- Spacing ----------
+   * 숫자 유틸 = Figma px 값 그대로 (p-20 → 20px, gap-16 → 16px)
+   */
+  --spacing: 1px;
+
+  /* semantic alias */
+  --spacing-none: 0px;
+  --spacing-inline-xs: 2px;
+  --spacing-inline-sm: 4px;
+  --spacing-compact-detail: 5px;
+  --spacing-inline-compact: 6px;
+  --spacing-inline-md: 8px;
+  --spacing-control-compact: 10px;
+  --spacing-control-x: 12px;
+  --spacing-stack-sm: 12px;
+  --spacing-stack-md: 16px;
+  --spacing-page-horizontal: 20px;
+  --spacing-stack-lg: 24px;
+  --spacing-stack-xl: 28px;
+  --spacing-section: 32px;
+  --spacing-section-lg: 40px;
+  --spacing-section-xl: 60px;
+  --spacing-cover-inset: 80px;
+  --spacing-preview-body-compact: 15px;
+  --spacing-preview-heading: 18px;
+  --spacing-preview-title: 25px;
+  --spacing-preview-display: 26px;
+
+  /* ---------- Radius ---------- */
+  --radius-none: 0px;
+  --radius-button: 6px;
+  --radius-control: 8px;
+  --radius-media: 12px;
+  --radius-card: 20px;
+  --radius-cover: 32px;
+  --radius-pill: 999px;
+  --radius-scaled-media: 16.8px; /* radius/scaled-media (Image type=flag) */
+
+  /* ---------- Typography ----------
+   * 클래스 하나에 크기 + 굵기 + 행간 + 자간 묶음 (예: text-heading-md)
+   */
+  --text-display-lg: 26px;
+  --text-display-lg--font-weight: 800;
+  --text-display-lg--line-height: 1.4;
+  --text-display-lg--letter-spacing: 0;
+
+  --text-title-lg: 25px;
+  --text-title-lg--font-weight: 600;
+  --text-title-lg--line-height: 1.4;
+  --text-title-lg--letter-spacing: 0;
+
+  --text-heading-lg: 20px;
+  --text-heading-lg--font-weight: 700;
+  --text-heading-lg--line-height: 1.4;
+  --text-heading-lg--letter-spacing: 0;
+
+  --text-heading-md: 18px;
+  --text-heading-md--font-weight: 600;
+  --text-heading-md--line-height: 1.4;
+  --text-heading-md--letter-spacing: 0;
+
+  --text-body-lg: 16px;
+  --text-body-lg--font-weight: 400;
+  --text-body-lg--line-height: 1.5;
+  --text-body-lg--letter-spacing: 0;
+
+  --text-body-compact: 15px;
+  --text-body-compact--font-weight: 400;
+  --text-body-compact--line-height: 1.5;
+  --text-body-compact--letter-spacing: 0;
+
+  --text-body-md: 14px;
+  --text-body-md--font-weight: 400;
+  --text-body-md--line-height: 1.5;
+  --text-body-md--letter-spacing: 0;
+
+  --text-label-lg: 16px;
+  --text-label-lg--font-weight: 600;
+  --text-label-lg--line-height: 1.4;
+  --text-label-lg--letter-spacing: 0;
+
+  --text-label-md: 14px;
+  --text-label-md--font-weight: 500;
+  --text-label-md--line-height: 1.4;
+  --text-label-md--letter-spacing: 0;
+
+  --text-caption-md: 12px;
+  --text-caption-md--font-weight: 400;
+  --text-caption-md--line-height: 1.5;
+  --text-caption-md--letter-spacing: 0;
+
+  /* ---------- Layout ---------- */
+  --container-mobile: 375px; /* Figma 모바일 프레임 폭 */
+}
+
+body {
+  background: var(--color-surface-default);
+  color: var(--color-text-strong);
+  font-family: var(--font-sans);
+}
